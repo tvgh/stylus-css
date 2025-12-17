@@ -1,0 +1,128 @@
+/* ==UserStyle==
+@name           GitHub README Masonry Cards
+@namespace      stylus-css
+@version        1.0.0
+@description    Pinterest-like masonry columns for image-heavy paragraphs and list items on GitHub READMEs.
+@author         stylus-css
+@license        MIT
+@preprocessor   stylus
+==/UserStyle== */
+
+@-moz-document domain("github.com") {
+  :root {
+    /* Layout & spacing */
+    --masonry-min-column: clamp(240px, 26vw, 360px);
+    --masonry-gap: 16px;
+    --masonry-image-gap: 8px;
+
+    /* Card styling */
+    --masonry-card-padding: 12px;
+    --masonry-card-radius: 12px;
+    --masonry-card-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    --masonry-border: 1px solid rgba(31, 35, 40, 0.08);
+
+    /* Theme tokens */
+    --masonry-surface: #ffffff;
+    --masonry-text: #1f2328;
+    --masonry-muted: #57606a;
+    --masonry-accent: #0969da;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --masonry-card-shadow: 0 12px 38px rgba(0, 0, 0, 0.55);
+      --masonry-border: 1px solid rgba(255, 255, 255, 0.08);
+      --masonry-surface: #0f141b;
+      --masonry-text: #e6edf3;
+      --masonry-muted: #8b949e;
+      --masonry-accent: #4493f8;
+    }
+  }
+
+  .markdown-body {
+    column-width: var(--masonry-min-column);
+    column-gap: var(--masonry-gap);
+    column-fill: balance;
+  }
+
+  /* Keep non-gallery content full width so only image blocks flow into columns */
+  .markdown-body > :not(p:has(img)):not(div:has(img)):not(ul:has(li:has(img))):not(ol:has(li:has(img))) {
+    column-span: all;
+  }
+
+  /* Lists with media become their own masonry zones */
+  .markdown-body ul:has(li:has(img)),
+  .markdown-body ol:has(li:has(img)) {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+    column-span: all;
+    column-width: var(--masonry-min-column);
+    column-gap: var(--masonry-gap);
+    column-fill: balance;
+  }
+
+  /* Masonry card shell */
+  .markdown-body :is(p:has(img), li:has(img), div:has(img)) {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--masonry-image-gap);
+    margin: 0 0 var(--masonry-gap);
+    padding: var(--masonry-card-padding);
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--masonry-surface);
+    border: var(--masonry-border);
+    border-radius: var(--masonry-card-radius);
+    box-shadow: var(--masonry-card-shadow);
+    break-inside: avoid;
+    color: var(--masonry-text);
+    text-decoration: none;
+    font-size: 0; /* Hide incidental text while keeping images visible */
+  }
+
+  /* Remove bullets on individual media list items */
+  .markdown-body li:has(img) {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  /* Hide inline text and keep media content visible */
+  .markdown-body :is(p:has(img), li:has(img), div:has(img)) > :not(img):not(a:has(img)):not(figure:has(img)):not(div:has(img)) {
+    display: none !important;
+  }
+
+  /* Image treatment */
+  .markdown-body :is(p:has(img), li:has(img), div:has(img)) img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--masonry-card-radius) - 4px);
+    background: color-mix(in srgb, var(--masonry-surface) 70%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 6%, transparent);
+  }
+
+  .markdown-body :is(p:has(img), li:has(img), div:has(img)) a:has(img) {
+    display: block;
+  }
+
+  /* Hover affordance */
+  .markdown-body :is(p:has(img), li:has(img), div:has(img)):hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--masonry-accent) 38%, transparent);
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  }
+
+  /* Captions tucked to the bottom if provided explicitly */
+  .markdown-body :is(p:has(img), li:has(img), div:has(img)) figcaption,
+  .markdown-body :is(p:has(img), li:has(img), div:has(img)) .caption,
+  .markdown-body :is(p:has(img), li:has(img), div:has(img)) .title {
+    display: block;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--masonry-muted);
+    margin-top: 4px;
+  }
+}
