@@ -11,7 +11,7 @@
 @-moz-document domain("github.com") {
   :root {
     /* Layout & spacing */
-    --masonry-min-column: clamp(240px, 26vw, 360px);
+    --masonry-columns: 4;                /* Number of columns (adjust: 2, 3, 4, 5...) */
     --masonry-gap: 16px;
     --masonry-image-gap: 8px;
 
@@ -40,9 +40,12 @@
   }
 
   .markdown-body {
-    column-width: var(--masonry-min-column);
+    column-count: var(--masonry-columns);
     column-gap: var(--masonry-gap);
     column-fill: balance;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   /* Keep non-gallery content full width so only image blocks flow into columns */
@@ -57,9 +60,10 @@
     padding-left: 0;
     margin-left: 0;
     column-span: all;
-    column-width: var(--masonry-min-column);
+    column-count: var(--masonry-columns);
     column-gap: var(--masonry-gap);
     column-fill: balance;
+    width: 100%;
   }
 
   /* Masonry card shell */
@@ -124,5 +128,72 @@
     line-height: 1.35;
     color: var(--masonry-muted);
     margin-top: 4px;
+  }
+
+  /* Collapsible code blocks to save screen space */
+  .markdown-body pre {
+    max-height: 30px;
+    overflow: auto;
+    transition: max-height 0.3s ease;
+    position: relative;
+  }
+
+  .markdown-body pre:hover,
+  .markdown-body pre:focus-within {
+    max-height: 60px;
+  }
+
+  /* Visual hint for collapsed state */
+  .markdown-body pre::after {
+    content: "";
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    height: 24px;
+    background: linear-gradient(to bottom, transparent, var(--masonry-surface));
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .markdown-body pre:hover::after {
+    opacity: 0;
+  }
+
+  /* Collapsible text lists to save screen space */
+  .markdown-body ul:not(:has(li:has(img))),
+  .markdown-body ol:not(:has(li:has(img))) {
+    max-height: 300px;
+    overflow: auto;
+    transition: max-height 0.3s ease;
+    position: relative;
+  }
+
+  .markdown-body ul:not(:has(li:has(img))):hover,
+  .markdown-body ol:not(:has(li:has(img))):hover {
+    max-height: 800px;
+  }
+
+  /* Visual hint for collapsed lists */
+  .markdown-body ul:not(:has(li:has(img)))::after,
+  .markdown-body ol:not(:has(li:has(img)))::after {
+    content: "";
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    height: 24px;
+    background: linear-gradient(to bottom, transparent, var(--masonry-surface));
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .markdown-body ul:not(:has(li:has(img))):hover::after,
+  .markdown-body ol:not(:has(li:has(img))):hover::after {
+    opacity: 0;
   }
 }
