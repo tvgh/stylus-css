@@ -1,5 +1,7 @@
 # stylus-css
 
+newcomer from antigravity
+
 Custom Stylus CSS snippets.
 
 ## GitHub README masonry userstyle
