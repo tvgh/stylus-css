@@ -21,6 +21,17 @@
     --masonry-card-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
     --masonry-border: 1px solid rgba(31, 35, 40, 0.08);
 
+    /* Prompt folding */
+    --masonry-prompt-max-height: 144px;
+    --masonry-prompt-label: "Hover or focus to expand prompt";
+    --masonry-prompt-sheen: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--masonry-surface) 0%, transparent) 0%,
+      color-mix(in srgb, var(--masonry-surface) 85%, transparent) 44%,
+      color-mix(in srgb, var(--masonry-surface) 92%, transparent) 68%,
+      color-mix(in srgb, var(--masonry-surface) 98%, transparent) 100%
+    );
+
     /* Theme tokens */
     --masonry-surface: #ffffff;
     --masonry-text: #1f2328;
@@ -124,5 +135,47 @@
     line-height: 1.35;
     color: var(--masonry-muted);
     margin-top: 4px;
+  }
+
+  /* Fold long prompts and code fences (especially after image cards) */
+  .markdown-body pre {
+    position: relative;
+    max-height: var(--masonry-prompt-max-height);
+    overflow: hidden;
+    border-radius: var(--masonry-card-radius);
+    border: var(--masonry-border);
+    box-shadow: var(--masonry-card-shadow);
+    margin: calc(var(--masonry-gap) * 0.6) 0 var(--masonry-gap);
+    scroll-padding: 12px;
+    cursor: zoom-in;
+    transition: box-shadow 160ms ease, border-color 160ms ease;
+  }
+
+  .markdown-body pre::after {
+    content: var(--masonry-prompt-label);
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 12px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.2;
+    color: var(--masonry-muted);
+    background: var(--masonry-prompt-sheen);
+    pointer-events: none;
+    transition: opacity 160ms ease;
+  }
+
+  .markdown-body pre:hover,
+  .markdown-body pre:focus-within {
+    max-height: none;
+    overflow: visible;
+    cursor: auto;
+    border-color: color-mix(in srgb, var(--masonry-accent) 38%, transparent);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+  }
+
+  .markdown-body pre:hover::after,
+  .markdown-body pre:focus-within::after {
+    opacity: 0;
   }
 }

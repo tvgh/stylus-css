@@ -22,8 +22,10 @@ Custom Stylus CSS snippets.
 - `--masonry-card-shadow`: drop shadow beneath each card.
 - `--masonry-border`: border outline for cards.
 - `--masonry-surface`, `--masonry-text`, `--masonry-muted`, `--masonry-accent`: theme colors (light and dark palettes provided).
+- `--masonry-prompt-max-height`, `--masonry-prompt-label`: controls folding of long prompt/code blocks (collapsed by default, expands on hover or focus).
 
 ### Notes
 
 - Text inside image-bearing paragraphs or list items is visually hidden so the masonry focuses on the imagery; captions added via elements like `figcaption` or `.caption` remain visible.
 - Lists that contain images are converted into their own masonry zone while other README content remains full width.
+- Long code-block prompts are collapsed by default with a hover/focus-to-expand affordance to avoid occupying excessive page space.
