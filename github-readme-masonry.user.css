@@ -11,7 +11,7 @@
 @-moz-document domain("github.com") {
   :root {
     /* Layout & spacing */
-    --masonry-columns: 4;                /* Number of columns (adjust: 2, 3, 4, 5...) */
+    --masonry-columns: 6;                /* Number of columns (adjust: 2, 3, 4, 5...) */
     --masonry-gap: 16px;
     --masonry-image-gap: 8px;
 
@@ -48,6 +48,33 @@
       --masonry-muted: #8b949e;
       --masonry-accent: #4493f8;
     }
+  }
+
+  /* Expand repo content to full window width */
+  #repo-content-pjax-container .container-xl,
+  #repo-content-pjax-container .container-lg,
+  #repo-content-pjax-container .container-md {
+    max-width: none;
+    width: 100%;
+  }
+
+  #repo-content-pjax-container .repository-content,
+  #repo-content-pjax-container .Layout {
+    max-width: none;
+  }
+
+  #repo-content-pjax-container .Layout-main {
+    width: 100%;
+  }
+
+  /* Optional: hide right sidebar for full-width content */
+  #repo-content-pjax-container .Layout-sidebar {
+    display: none;
+  }
+
+  /* Remove reserved sidebar column when hidden */
+  #repo-content-pjax-container .Layout {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .markdown-body {
